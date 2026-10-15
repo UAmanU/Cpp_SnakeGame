@@ -1,16 +1,19 @@
 #pragma once
 
-#include <vector>
-#include "object\object.h"
+#include "object\snake.h"
+#include "object\apple.h"
+
+#include <memory>
 
 class Game
 {
 private:
-    std::vector<Object> objects;
+    std::unique_ptr<Snake> snake;
+    std::vector<Apple> apples;
     void prepare();
 
 public:
-    Game(std::vector<Object> objects);
+    Game(std::unique_ptr<Snake> snake, std::vector<Apple> apples);
     ~Game() = default;
     void start_game();
 };

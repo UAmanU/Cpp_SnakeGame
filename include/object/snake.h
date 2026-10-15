@@ -5,11 +5,10 @@
 
 struct Snake : Object
 {
-    std::vector<Vector2> vector;
-    Color color;
-    Snake();
-    Snake(std::vector<Vector2> vector, Color color);
+    int delta_x = 0;
+    int delta_y = 0;
+
     ~Snake() = default;
-    void draw();
-    void move(int delta_x, int delta_y);
+
+    void move();
 };
