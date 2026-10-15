@@ -7,6 +7,7 @@ class Game
 {
 private:
     std::vector<Object> objects;
+    void prepare();
 
 public:
     Game(std::vector<Object> objects);
