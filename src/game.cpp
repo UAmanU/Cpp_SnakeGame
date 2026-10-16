@@ -55,7 +55,6 @@ void Game::update_snake()
             }
         }
     }
-    snake->vector.pop_back();
 }
 bool Game::check_exit()
 {
@@ -78,8 +77,7 @@ void Game::prepare()
 void Game::start_game()
 {
 
-
-    while (WindowShouldClose())
+    while (!(WindowShouldClose()))
     {
         if (check_exit())
             break;
@@ -94,6 +92,6 @@ void Game::start_game()
         draw_snake();
         draw_apples();
         EndDrawing();
-    }
+        }
     CloseWindow();
 }

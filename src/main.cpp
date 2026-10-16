@@ -25,7 +25,8 @@ std::vector<Apple> get_apples()
     {
         int apple_x = GetRandomValue(0, GameSettings::TILE_X_AMOUNT - 1) * GameSettings::TILE_LENGTH;
         int apple_y = GetRandomValue(0, GameSettings::TILE_Y_AMOUNT - 1) * GameSettings::TILE_LENGTH;
-        Apple apple = Apple({apple_x, apple_y}, ColorsSettings::APPLE);
+        Vector2 coords = {apple_x, apple_y};
+        Apple apple = Apple(coords, ColorsSettings::APPLE);
         apples.push_back(std::move(apple));
         i++;
     }
