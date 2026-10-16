@@ -3,7 +3,7 @@
 #include "include/config/window_settings.h"
 #include "include/config/game_settings.h"
 #include "include/config/control_settings.h"
-
+#include "include/config/colors_settings.h"
 #include <raylib.h>
 
 Game::Game(std::unique_ptr<Snake> snake, std::vector<Apple> apples) : snake(std::move(snake)), apples(std::move(apples)) {};
@@ -12,13 +12,20 @@ void Game::draw_apples() const
 {
     for (const Apple &apple : apples)
     {
-        const int radius = GameSettings::TILE_LENGTH / 2;
-        const int center_x = apple.vector[0].x + GameSettings::TILE_LENGTH / 2;
-        const int center_y = apple.vector[0].y - GameSettings::TILE_LENGTH / 2;
-        DrawCircle(center_x, center_y, radius, apple.color);
+        int apple_radius = GameSettings::TILE_LENGTH / 2;
+        const int center_x = apple.vector[0].x + apple_radius;
+        const int center_y = apple.vector[0].y - apple_radius;
+        DrawCircle(center_x, center_y, apple_radius, apple.color);
     }
 }
-void Game::update_snake_position()
+void Game::draw_snake() const
+{
+    for (const auto &coords : snake->vector)
+    {
+        DrawRectangle(coords.x, coords.y, 20, 20, ColorsSettings::SNAKE);
+    }
+}
+void Game::update_snake()
 {
     if (IsKeyPressed(ControlSettings::MOVE_UP))
     {
@@ -36,6 +43,19 @@ void Game::update_snake_position()
     {
         snake->delta_y = 1;
     }
+    for (auto &apple : apples)
+    {
+        for (const auto &coords : snake->vector)
+        {
+            if (apple.vector[0].x == coords.x && apple.vector[0].y == coords.y)
+            {
+                snake->vector.push_back(apple.vector[0]);
+                apple.move();
+                return;
+            }
+        }
+    }
+    snake->vector.pop_back();
 }
 bool Game::check_exit()
 {
@@ -57,21 +77,23 @@ void Game::prepare()
 }
 void Game::start_game()
 {
-    prepare();
+
 
     while (WindowShouldClose())
     {
         if (check_exit())
             break;
 
-        update_snake_position();
+        update_snake();
 
         if (!check_snake_validality())
             break;
 
         BeginDrawing();
-
+        ClearBackground(ColorsSettings::FIELD);
+        draw_snake();
         draw_apples();
+        EndDrawing();
     }
     CloseWindow();
 }

@@ -10,14 +10,16 @@ class Game
 private:
     std::unique_ptr<Snake> snake;
     std::vector<Apple> apples;
-    void prepare();
-    void update_snake_position();
+
+    void update_snake();
     bool check_snake_validality() const;
     bool check_exit();
     void draw_apples() const;
+    void draw_snake() const;
 
 public:
     Game(std::unique_ptr<Snake> snake, std::vector<Apple> apples);
     ~Game() = default;
+    void prepare();
     void start_game();
 };

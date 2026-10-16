@@ -4,5 +4,6 @@
 
 struct Apple : Object
 {
+    Apple(Vector2 coords, Color color);
     void move();
 };
