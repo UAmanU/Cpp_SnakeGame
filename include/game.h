@@ -16,6 +16,8 @@ private:
     bool check_exit();
     void draw_apples() const;
     void draw_snake() const;
+    bool check_win() const;
+    int score = 0;
 
 public:
     Game(std::unique_ptr<Snake> snake, std::vector<Apple> apples);

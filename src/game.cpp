@@ -5,14 +5,13 @@
 #include "include/config/control_settings.h"
 #include "include/config/colors_settings.h"
 #include <raylib.h>
-#include <algorithm>
 
 Game::Game(std::unique_ptr<Snake> snake, std::vector<Apple> apples) : snake(std::move(snake)), apples(std::move(apples)) {};
 
 void Game::draw_lines() const
 {
     int j = 1;
-    for (int i = 1; i < WindowSettings::WIDTH; i++)
+    for (int i = 1; i < GameSettings::TILE_X_AMOUNT; i++)
     {
         DrawLine(i * GameSettings::TILE_LENGTH, 0, i * GameSettings::TILE_LENGTH, WindowSettings::HEIGHT, ColorsSettings::LINES);
         DrawLine(0, j * GameSettings::TILE_LENGTH, WindowSettings::WIDTH, j * GameSettings::TILE_LENGTH, ColorsSettings::LINES);
@@ -60,38 +59,36 @@ void Game::update_snake()
     }
     for (auto &apple : apples)
     {
-        for (const auto &coords : snake->vector)
+        if (apple.vector[0].x == snake->vector[0].x && apple.vector[0].y == snake->vector[0].y)
         {
-            if (apple.vector[0].x == coords.x && apple.vector[0].y == coords.y)
-            {
-                snake->vector.push_back(apple.vector[0]);
-                apple.move();
-                return;
-            }
+            snake->vector.push_back(apple.vector[0]);
+            score += GameSettings::SCORES_FOR_EACH_APPLE;
+            apple.move();
         }
     }
 }
+
 bool Game::check_exit()
 {
     return (IsKeyPressed(ControlSettings::EXIT));
 }
 bool Game::check_snake_validality() const
 {
-    if (!(snake->vector[0].x <= WindowSettings::WIDTH && snake->vector[0].x > 0 && snake->vector[0].y <= WindowSettings::HEIGHT && snake->vector[0].y > 0))
-    {
-        return false;
-    }
-    return true;
+    return snake->vector[0].x <= WindowSettings::WIDTH && snake->vector[0].x >= 0 && snake->vector[0].y <= WindowSettings::HEIGHT && snake->vector[0].y >= 0;
 }
 void Game::prepare()
 {
     InitWindow(WindowSettings::WIDTH, WindowSettings::HEIGHT, WindowSettings::NAME.c_str());
     SetTargetFPS(GameSettings::FPS);
 
-    if (!WindowSettings::CURSOR_ENABLED)
+    if (WindowSettings::CURSOR_ENABLED)
     {
         EnableCursor();
     }
+}
+bool Game::check_win() const
+{
+    return score >= GameSettings::SCORES_FOR_WIN;
 }
 void Game::start_game()
 {
@@ -106,11 +103,15 @@ void Game::start_game()
         if (!check_snake_validality())
             break;
         snake->move();
+        if (check_win())
+            break;
         BeginDrawing();
         ClearBackground(ColorsSettings::FIELD);
         draw_lines();
         draw_snake();
         draw_apples();
+        const std::string scoreboard = "Score: " + std::to_string(score);
+        DrawText(scoreboard.c_str(), GameSettings::SCOREBOARD_X_POS, GameSettings::SCOREBOARD_Y_POS, GameSettings::SCOREBOARD_FONT_SIZE, ColorsSettings::SCOREBOARD);
         EndDrawing();
     }
     CloseWindow();
