@@ -10,7 +10,7 @@ class Game
 private:
     std::unique_ptr<Snake> snake;
     std::vector<Apple> apples;
-
+    void draw_lines() const;
     void update_snake();
     bool check_snake_validality() const;
     bool check_exit();
