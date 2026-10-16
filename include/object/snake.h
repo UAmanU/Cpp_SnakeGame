@@ -5,6 +5,8 @@
 
 struct Snake : Object
 {
+    using Object::Object;
+
     int delta_x = 0;
     int delta_y = 0;
 

@@ -3,6 +3,8 @@
 
 #include <raylib.h>
 
+Apple::Apple(Vector2 coords, Color color) : Object({coords}, color) {}
+
 void Apple::move()
 {
     Vector2 &apple_vector = vector[0];

@@ -29,6 +29,7 @@ std::vector<Apple> get_apples()
         apples.push_back(std::move(apple));
         i++;
     }
+    return apples;
 }
 int main()
 {
