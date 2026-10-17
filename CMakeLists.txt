@@ -13,6 +13,7 @@ add_executable(Cpp_SnakeGame ${GAME_SOURCES})
 target_include_directories(Cpp_SnakeGame PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}"
     "${CMAKE_CURRENT_SOURCE_DIR}/lib"
+    "${CMAKE_CURRENT_SOURCE_DIR}/object"
 )
 
 target_link_libraries(Cpp_SnakeGame PRIVATE

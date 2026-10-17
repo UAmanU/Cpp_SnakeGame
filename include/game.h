@@ -1,5 +1,6 @@
 #pragma once
 
+#include "game_renderer.h"
 #include "object\snake.h"
 #include "object\apple.h"
 
@@ -8,14 +9,13 @@
 class Game
 {
 private:
+    GameRenderer renderer;
     std::unique_ptr<Snake> snake;
     std::vector<Apple> apples;
-    void draw_lines() const;
     void update_snake();
     bool check_snake_validality() const;
     bool check_exit();
-    void draw_apples() const;
-    void draw_snake() const;
+
     bool check_win() const;
     int score = 0;
 

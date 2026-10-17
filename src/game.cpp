@@ -1,5 +1,5 @@
 #include "include/game.h"
-
+#include "include/game_renderer.h"
 #include "include/config/window_settings.h"
 #include "include/config/game_settings.h"
 #include "include/config/control_settings.h"
@@ -8,33 +8,6 @@
 
 Game::Game(std::unique_ptr<Snake> snake, std::vector<Apple> apples) : snake(std::move(snake)), apples(std::move(apples)) {};
 
-void Game::draw_lines() const
-{
-    int j = 1;
-    for (int i = 1; i < GameSettings::TILE_X_AMOUNT; i++)
-    {
-        DrawLine(i * GameSettings::TILE_LENGTH, 0, i * GameSettings::TILE_LENGTH, WindowSettings::HEIGHT, ColorsSettings::LINES);
-        DrawLine(0, j * GameSettings::TILE_LENGTH, WindowSettings::WIDTH, j * GameSettings::TILE_LENGTH, ColorsSettings::LINES);
-        j++;
-    }
-}
-void Game::draw_apples() const
-{
-    for (const Apple &apple : apples)
-    {
-        int apple_radius = GameSettings::TILE_LENGTH / 2;
-        const int center_x = apple.vector[0].x + apple_radius;
-        const int center_y = apple.vector[0].y + apple_radius;
-        DrawCircle(center_x, center_y, apple_radius, apple.color);
-    }
-}
-void Game::draw_snake() const
-{
-    for (const auto &coords : snake->vector)
-    {
-        DrawRectangle(coords.x, coords.y, 20, 20, ColorsSettings::SNAKE);
-    }
-}
 void Game::update_snake()
 {
     if (IsKeyPressed(ControlSettings::MOVE_UP))
@@ -106,12 +79,10 @@ void Game::start_game()
         if (check_win())
             break;
         BeginDrawing();
-        ClearBackground(ColorsSettings::FIELD);
-        draw_lines();
-        draw_snake();
-        draw_apples();
-        const std::string scoreboard = "Score: " + std::to_string(score);
-        DrawText(scoreboard.c_str(), GameSettings::SCOREBOARD_X_POS, GameSettings::SCOREBOARD_Y_POS, GameSettings::SCOREBOARD_FONT_SIZE, ColorsSettings::SCOREBOARD);
+        renderer.draw_field();
+        renderer.draw_all_apples(apples);
+        renderer.draw_snake(*snake);
+        renderer.draw_scoreboard(score);
         EndDrawing();
     }
     CloseWindow();

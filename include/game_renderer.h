@@ -14,7 +14,8 @@ private:
 public:
     GameRenderer() = default; // constructor and destructor are default because GameRenderer doesn't need to own snake and apples.
     ~GameRenderer() = default;
-    void draw_all_apples(const std::vector<Apple> &apples) const; // This method calls GameRenderer::draw_apple(const Apple &apple) const for each apple in vector
-    void draw_snake(const Snake &snake) const;                    // This method draws rectangle for each x,y from snake.vector in window
+    void draw_all_apples(const std::vector<Apple> &apples) const; // GameRenderer::draw_all_apples() method calls GameRenderer::draw_apple(const Apple &apple) const for each apple in vector
+    void draw_snake(const Snake &snake) const;                    // GameRenderer::draw_snake() method draws rectangle for each x,y from snake.vector in window
     void draw_field() const;                                      // GameRenderer::draw_field() calls ClearBackground() and draws lines for tile separating.
+    void draw_scoreboard(size_t score) const;                     // GameRenderer::draw_scoreboard() method draw player's score.
 };
