@@ -1,27 +1,29 @@
 #pragma once
 
-#include "game_renderer.h"
-#include "object\snake.h"
-#include "object\apple.h"
+#include "game_renderer.h" //including the GameRenderer class for rendering the Window
 
-#include <memory>
+#include <memory> //including STL memory for the smart pointer to snake which is owned by Game class
+
+/*In this file, there's a Game class declaration.
+Game class owns snake smart pointer, GameRenderer object for rendering and apples vector.
+Game class launches the main loop.*/
 
 class Game
 {
 private:
-    GameRenderer renderer;
-    std::unique_ptr<Snake> snake;
-    std::vector<Apple> apples;
-    void update_snake();
-    bool check_snake_validality() const;
-    bool check_exit();
+    GameRenderer renderer;               // GameRenderer attribute for rendering
+    std::unique_ptr<Snake> snake;        // unique_ptr to Snake object
+    std::vector<Apple> apples;           // vector of Apple-type objects
+    void update_snake();                 // changes snake's delta_x and delta_y and checks eating an apple
+    bool check_snake_validality() const; // checks if snake's head is out of field.
+    bool check_exit();                   // returns true if user wants to close the Window
 
-    bool check_win() const;
-    int score = 0;
+    bool check_win() const; // returns true if user has enough score to win
+    int score = 0;          // integer attribute that shows how many scores does user has
 
 public:
-    Game(std::unique_ptr<Snake> snake, std::vector<Apple> apples);
-    ~Game() = default;
-    void prepare();
-    void start_game();
+    Game(std::unique_ptr<Snake> snake, std::vector<Apple> apples); // constructor that takes smart pointer to snake ans vector of Apple-type objects
+    ~Game() = default;                                             // default constructor
+    void prepare();                                                // method for calling InitWindow(), SetTargetFPS() and EnableCursor() depending on config settings
+    void start_game();                                             // main method where the game loop runs.
 };

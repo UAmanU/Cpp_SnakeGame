@@ -1,5 +1,5 @@
 /*in this file, there's a realisation of GameRenderer class*/
-#include "include/game_renderer.h"          //including the file where GameRenderer class was declared
+#include "include/game/game_renderer.h"     //including the file where GameRenderer class was declared
 #include "lib/raylib.h"                     //including the library for drawing objects in InitWindow.
 #include "include/config/game_settings.h"   //including the GameSettings namespace for evaluating apple's radius and lines amount.
 #include "include/config/colors_settings.h" //including the ColorsSettings for drawing grass and separating lines in InitWindow

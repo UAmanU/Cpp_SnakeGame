@@ -1,7 +1,5 @@
-#include "include/object/apple.h"
-#include "include/config/game_settings.h"
-
-#include <raylib.h>
+#include "include/object/apple.h"         //including the Apple struct's declaration
+#include "include/config/game_settings.h" //including the GameSettings namespace for evaluating the apple's coordinates.
 
 Apple::Apple(Vector2 coords, Color color) : Object({coords}, color) {}
 
