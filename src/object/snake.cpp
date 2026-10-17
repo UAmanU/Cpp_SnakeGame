@@ -7,7 +7,7 @@ void Snake::move()
 
     std::vector<Vector2> new_vector;
     new_vector.push_back({vector[0].x + delta_x * GameSettings::TILE_LENGTH, vector[0].y + delta_y * GameSettings::TILE_LENGTH}); // pushing back the head coordinates to the new_vector depending on delta_x and delta_y
-    int current_length = vector.size();                                                                                           // saving the current snake's length in integer variable
+
     for (auto &coords : vector)
     {
         new_vector.push_back(coords); // pushing back the current vector attribute elements to the new_vector with the new head
