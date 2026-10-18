@@ -1,9 +1,10 @@
 #include "include/game/game.h" //including the Game class declaration for its realisation
 
-#include "include/config/window_settings.h"  //including the WindowSettings namespace for creating an InitWindow
-#include "include/config/game_settings.h"    //including the GameSettings namespace for FPS, tile and scores parameters
-#include "include/config/control_settings.h" //including the ControlSettings namespace for updataing snake's delta_x and delta_y attributes depending on what key did user pressed.
-
+#include "include/config/window_settings.h"                                                                                  //including the WindowSettings namespace for creating an InitWindow
+#include "include/config/game_settings.h"                                                                                    //including the GameSettings namespace for FPS, tile and scores parameters
+#include "include/config/control_settings.h"                                                                                 //including the ControlSettings namespace for updataing snake's delta_x and delta_y attributes depending on what key did user pressed.
+#include <algorithm>                                                                                                         //including the STL algorithm for checking if snake crashing into itself.
+#include "include/game/game_states.h"                                                                                        //including the GameState enum class for the game loop operator
 Game::Game(std::unique_ptr<Snake> snake, std::vector<Apple> apples) : snake(std::move(snake)), apples(std::move(apples)) {}; // Constructor realisation
 
 void Game::update_snake()
@@ -51,8 +52,12 @@ bool Game::check_exit()
 }
 bool Game::check_snake_validality() const
 {
-    // This check is kinda laggy now, but it needs to check if snake is out of window
-    return snake->vector[0].x <= WindowSettings::WIDTH && snake->vector[0].x >= 0 && snake->vector[0].y <= WindowSettings::HEIGHT && snake->vector[0].y >= 0;
+    // snake in field condition
+    bool is_snake_in_field = snake->vector[0].x <= WindowSettings::WIDTH && snake->vector[0].x >= 0 && snake->vector[0].y <= WindowSettings::HEIGHT && snake->vector[0].y >= 0;
+    // snake doesn't crash into itself condition
+    auto it = std::find(snake->vector.begin() + 1, snake->vector.end(), snake->vector[0]); // pointer that shows if there's a snake block with exact same coordinates as future head.
+    bool is_snake_body_valid = it == snake->vector.end() && it != snake->vector.end() - 1; // condition of snake position validality.
+    return is_snake_in_field && is_snake_body_valid;                                       // returning the and condition of both of these conditions
 }
 void Game::prepare()
 {
@@ -73,35 +78,38 @@ bool Game::check_win() const
 }
 void Game::start_game()
 {
-
+    GameState game_state = GameState::Menu; // game loop operator. The game is starting with menu.
     // Game loop
     while (!(WindowShouldClose()))
     {
         // Input
         if (check_exit())
             break;
+        if (game_state == GameState::Menu)
+        {
 
-        update_snake();
-        // Input
+            update_snake();
+            // Input
 
-        // Update
-        if (!check_snake_validality())
-            break;
-        snake->move();
-        if (check_win())
-            break;
-        // Update
+            // Update
+            if (!check_snake_validality())
+                break;
+            snake->move();
+            if (check_win())
+                break;
+            // Update
 
-        // Drawing
-        BeginDrawing();
-        renderer.draw_field();
-        renderer.draw_all_apples(apples);
-        renderer.draw_snake(*snake);
-        renderer.draw_scoreboard(score);
-        EndDrawing();
-        // Drawing
+            // Drawing
+            BeginDrawing();
+            renderer.draw_field();
+            renderer.draw_all_apples(apples);
+            renderer.draw_snake(*snake);
+            renderer.draw_scoreboard(score);
+            EndDrawing();
+            // Drawing
+        }
+        // Game loop
+
+        CloseWindow(); // closing the window
     }
-    // Game loop
-
-    CloseWindow(); // closing the window
 }
