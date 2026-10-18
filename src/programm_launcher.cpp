@@ -83,15 +83,20 @@ void ProgrammLauncher::launch_programm()
             bool game_should_continue = game->game_should_continue();
             if (!game_should_continue)
             {
+                game_result = game->check_win();
                 game_state = GameState::Restart;
                 break;
             }
+
             break;
         }
         case GameState::Restart:
             menu->render_aftergame_menu(game_result);
             if (menu->user_wants_to_restart())
             {
+                auto snake = std::make_unique<Snake>(get_snake_vector(), ColorsSettings::SNAKE);
+                auto apples = get_apples_vector();
+                game->reset(std::move(snake), std::move(apples));
                 game_state = GameState::Game;
             }
         }

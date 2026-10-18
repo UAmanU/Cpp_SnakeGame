@@ -12,26 +12,42 @@ void Game::update()
     if (IsKeyPressed(ControlSettings::MOVE_UP))
     {
         // key_up was pressed - we are changing snake's direction
-        snake->delta_y = -1;
-        snake->delta_x = 0;
+        // Snake can't turn 180 degrees
+        if (snake->delta_y != 1)
+        {
+            snake->delta_y = -1;
+            snake->delta_x = 0;
+        }
     }
     if (IsKeyPressed(ControlSettings::MOVE_DOWN))
     {
         // key_down was pressed - we are changing snake's direction
-        snake->delta_y = 1;
-        snake->delta_x = 0;
+        // Snake can't turn 180 degrees
+        if (snake->delta_y != -1)
+        {
+            snake->delta_y = 1;
+            snake->delta_x = 0;
+        }
     }
     if (IsKeyPressed(ControlSettings::MOVE_LEFT))
     {
         // key_left was pressed - we are changing snake's direction
-        snake->delta_x = -1;
-        snake->delta_y = 0;
+        // Snake can't turn 180 degrees
+        if (snake->delta_x != 1)
+        {
+            snake->delta_x = -1;
+            snake->delta_y = 0;
+        }
     }
     if (IsKeyPressed(ControlSettings::MOVE_RIGHT))
     {
         // key_right was pressed - we are changing snake's direction
-        snake->delta_x = 1;
-        snake->delta_y = 0;
+        // Snake can't turn 180 degrees
+        if (snake->delta_x != -1)
+        {
+            snake->delta_x = 1;
+            snake->delta_y = 0;
+        }
     }
     // Checking if snake ate an apple.
     for (auto &apple : apples)
@@ -43,6 +59,7 @@ void Game::update()
             apple.move();                                 // moving apple to the random position
         }
     }
+    snake->move();
 }
 
 bool Game::check_snake_validality() const
@@ -56,7 +73,7 @@ bool Game::check_snake_validality() const
     for (int i = 1; i < snake->vector.size(); i++)
     {
         Vector2 coords = snake->vector[i];
-        if (coords.x == snake->vector[0].x && coords.x == snake->vector[0].y && i != snake->vector.size() - 1)
+        if (coords.x == snake->vector[0].x && coords.y == snake->vector[0].y && i != snake->vector.size() - 1)
         {
             return false;
         }
@@ -79,4 +96,10 @@ void Game::draw()
     renderer.draw_snake(*snake);
     renderer.draw_all_apples(apples);
     renderer.draw_scoreboard(score);
+}
+void Game::reset(std::unique_ptr<Snake> new_snake, std::vector<Apple> new_apples)
+{
+    score = 0;
+    snake = std::move(new_snake);
+    apples = std::move(new_apples);
 }

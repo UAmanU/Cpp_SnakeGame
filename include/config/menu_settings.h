@@ -12,10 +12,10 @@ namespace MenuSettings
     inline const std::string START_GAME_TEXT = "Start Game";                           // Start game button text
     inline constexpr int TEXT_FONT_SIZE = 30;                                          // Text's Font size
     inline constexpr Vector2 START_GAME_TEXT_POSITION = {225, 225};                    // Start game button text's position
-    inline constexpr Vector2 RESULT_TEXT_POSITION = {300, 300};                        // Result text's position in after-game menu
+    inline constexpr Vector2 RESULT_TEXT_POSITION = {75, 200};                         // Result text's position in after-game menu
     inline const std::string WIN_TEXT = "You won!";                                    // Text in after-game menu if user won.
     inline const std::string LOSE_TEXT = "You lost!";                                  // Text in after-game menu if user lost.
-    inline constexpr Vector2 RESTART_INSTRUCTION_TEXT_POSITION = {350, 350};           // Text to instruct the user how to restart the game's position
+    inline constexpr Vector2 RESTART_INSTRUCTION_TEXT_POSITION = {75, 225};            // Text to instruct the user how to restart the game's position
     inline const std::string RESTART_INSTRUCTION_TEXT = "Press Enter to start again."; // Text to instruct the user how to restart the game.
 
 };
