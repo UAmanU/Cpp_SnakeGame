@@ -45,71 +45,55 @@ void Game::update_snake()
     }
 }
 
-bool Game::check_exit()
-{
-
-    return (IsKeyPressed(ControlSettings::EXIT));
-}
 bool Game::check_snake_validality() const
 {
     // snake in field condition
-    bool is_snake_in_field = snake->vector[0].x <= WindowSettings::WIDTH && snake->vector[0].x >= 0 && snake->vector[0].y <= WindowSettings::HEIGHT && snake->vector[0].y >= 0;
-    // snake doesn't crash into itself condition
-    auto it = std::find(snake->vector.begin() + 1, snake->vector.end(), snake->vector[0]); // pointer that shows if there's a snake block with exact same coordinates as future head.
-    bool is_snake_body_valid = it == snake->vector.end() && it != snake->vector.end() - 1; // condition of snake position validality.
-    return is_snake_in_field && is_snake_body_valid;                                       // returning the and condition of both of these conditions
-}
-void Game::prepare()
-{
-
-    InitWindow(WindowSettings::WIDTH, WindowSettings::HEIGHT, WindowSettings::NAME.c_str()); // Creating a window
-    SetTargetFPS(GameSettings::FPS);                                                         // Setting a FPS for this Window
-
-    if (WindowSettings::CURSOR_ENABLED)
+    if (snake->vector[0].x <= WindowSettings::WIDTH && snake->vector[0].x >= 0 && snake->vector[0].y <= WindowSettings::HEIGHT && snake->vector[0].y >= 0)
     {
-        EnableCursor();
-        // Enabling cursor if WindowSettings::CURSOR_ENABLED is true
+        return false;
+    };
+    // snake doesn't crash into itself condition
+    for (int i = 1; i < snake->vector.size(); i++)
+    {
+        Vector2 coords = snake->vector[i];
+        if (coords.x == snake->vector[0].x && coords.x == snake->vector[0].y && i != snake->vector.size() - 1)
+        {
+            return false;
+        }
     }
+    return true; // returning the and condition of both of these conditions
 }
+
 bool Game::check_win() const
 {
     // checking the win
     return score >= GameSettings::SCORES_FOR_WIN;
 }
-void Game::start_game()
+bool Game::start_game()
 {
     GameState game_state = GameState::Menu; // game loop operator. The game is starting with menu.
     // Game loop
     while (!(WindowShouldClose()))
     {
         // Input
-        if (check_exit())
-            break;
-        if (game_state == GameState::Menu)
-        {
+        update_snake();
+        // Input
 
-            update_snake();
-            // Input
+        // Update
+        if (!check_snake_validality())
+            return false;
+        snake->move();
+        if (check_win())
+            return true;
+        // Update
 
-            // Update
-            if (!check_snake_validality())
-                break;
-            snake->move();
-            if (check_win())
-                break;
-            // Update
-
-            // Drawing
-            BeginDrawing();
-            renderer.draw_field();
-            renderer.draw_all_apples(apples);
-            renderer.draw_snake(*snake);
-            renderer.draw_scoreboard(score);
-            EndDrawing();
-            // Drawing
-        }
-        // Game loop
-
-        CloseWindow(); // closing the window
+        // Drawing
+        renderer.draw_field();
+        renderer.draw_all_apples(apples);
+        renderer.draw_snake(*snake);
+        renderer.draw_scoreboard(score);
+        // Drawing
     }
+    return true;
+    // Game loop
 }

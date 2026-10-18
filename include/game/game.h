@@ -16,14 +16,13 @@ private:
     std::vector<Apple> apples;           // vector of Apple-type objects
     void update_snake();                 // changes snake's delta_x and delta_y and checks eating an apple
     bool check_snake_validality() const; // checks if snake's head is out of field.
-    bool check_exit();                   // returns true if user wants to close the Window
 
-    bool check_win() const; // returns true if user has enough score to win
-    int score = 0;          // integer attribute that shows how many scores does user has
+    bool check_win() const;              // returns true if user has enough score to win
+    int score = 0;                       // integer attribute that shows how many scores does user has
 
 public:
     Game(std::unique_ptr<Snake> snake, std::vector<Apple> apples); // constructor that takes smart pointer to snake ans vector of Apple-type objects
     ~Game() = default;                                             // default constructor
-    void prepare();                                                // method for calling InitWindow(), SetTargetFPS() and EnableCursor() depending on config settings
-    void start_game();                                             // main method where the game loop runs.
+    
+    bool start_game();                                             // main method where the game loop runs ,returns the game result
 };

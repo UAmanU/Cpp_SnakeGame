@@ -16,6 +16,6 @@ namespace MenuSettings
     inline const std::string WIN_TEXT = "You won!";                                   // Text in after-game menu if user won.
     inline const std::string LOSE_TEXT = "You lost!";                                 // Text in after-game menu if user lost.
     inline constexpr Vector2 RESTART_INSTRUCTION_TEXT_POSITION = {350, 350};          // Text to instruct the user how to restart the game's position
-    inline const std::string RESTART_INSTRUCTION_TEXT = "Press Enter to start again." // Text to instruct the user how to restart the game.
+    inline const std::string RESTART_INSTRUCTION_TEXT = "Press Enter to start again.";// Text to instruct the user how to restart the game.
 
 };
