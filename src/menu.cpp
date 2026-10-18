@@ -15,8 +15,12 @@ void Menu::render_start_game_button() const
 
 bool Menu::user_wants_to_start_game() const
 {
-    Vector2 click_coordinates = GetMouseDelta(); // geting the click position
-    return CheckCollisionPointRec(click_coordinates, MenuSettings::GAME_BUTTON_BOX);
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    {
+        Vector2 click_coordinates = GetMousePosition(); // geting the click position
+        return CheckCollisionPointRec(click_coordinates, MenuSettings::GAME_BUTTON_BOX);
+    }
+    return false;
 }
 void Menu::render_menu() const
 {

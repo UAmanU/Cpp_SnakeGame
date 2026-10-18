@@ -78,8 +78,15 @@ void ProgrammLauncher::launch_programm()
         }
         case GameState::Game:
         {
-            game_result = game->start_game();
-            game_state = GameState::Restart;
+            game->update();
+            game->draw();
+            bool game_should_continue = game->game_should_continue();
+            if (!game_should_continue)
+            {
+                game_state = GameState::Restart;
+                break;
+            }
+            break;
         }
         case GameState::Restart:
             menu->render_aftergame_menu(game_result);

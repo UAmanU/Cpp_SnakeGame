@@ -7,7 +7,7 @@
 #include "include/game/game_states.h"                                                                                        //including the GameState enum class for the game loop operator
 Game::Game(std::unique_ptr<Snake> snake, std::vector<Apple> apples) : snake(std::move(snake)), apples(std::move(apples)) {}; // Constructor realisation
 
-void Game::update_snake()
+void Game::update()
 {
     if (IsKeyPressed(ControlSettings::MOVE_UP))
     {
@@ -48,7 +48,7 @@ void Game::update_snake()
 bool Game::check_snake_validality() const
 {
     // snake in field condition
-    if (snake->vector[0].x <= WindowSettings::WIDTH && snake->vector[0].x >= 0 && snake->vector[0].y <= WindowSettings::HEIGHT && snake->vector[0].y >= 0)
+    if (!(snake->vector[0].x <= WindowSettings::WIDTH && snake->vector[0].x >= 0 && snake->vector[0].y <= WindowSettings::HEIGHT && snake->vector[0].y >= 0))
     {
         return false;
     };
@@ -69,31 +69,14 @@ bool Game::check_win() const
     // checking the win
     return score >= GameSettings::SCORES_FOR_WIN;
 }
-bool Game::start_game()
+bool Game::game_should_continue() const
 {
-    GameState game_state = GameState::Menu; // game loop operator. The game is starting with menu.
-    // Game loop
-    while (!(WindowShouldClose()))
-    {
-        // Input
-        update_snake();
-        // Input
-
-        // Update
-        if (!check_snake_validality())
-            return false;
-        snake->move();
-        if (check_win())
-            return true;
-        // Update
-
-        // Drawing
-        renderer.draw_field();
-        renderer.draw_all_apples(apples);
-        renderer.draw_snake(*snake);
-        renderer.draw_scoreboard(score);
-        // Drawing
-    }
-    return true;
-    // Game loop
+    return check_snake_validality() && (!check_win());
+}
+void Game::draw()
+{
+    renderer.draw_field();
+    renderer.draw_snake(*snake);
+    renderer.draw_all_apples(apples);
+    renderer.draw_scoreboard(score);
 }
