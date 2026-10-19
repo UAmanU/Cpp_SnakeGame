@@ -11,6 +11,7 @@ file(GLOB_RECURSE GAME_SOURCES CONFIGURE_DEPENDS
 add_executable(Cpp_SnakeGame ${GAME_SOURCES})
 
 target_include_directories(Cpp_SnakeGame PRIVATE
+    "${CMAKE_CURRENT_SOURCE_DIR}/game"
     "${CMAKE_CURRENT_SOURCE_DIR}"
     "${CMAKE_CURRENT_SOURCE_DIR}/lib"
     "${CMAKE_CURRENT_SOURCE_DIR}/object"

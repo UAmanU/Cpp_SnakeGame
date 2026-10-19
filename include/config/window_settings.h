@@ -13,6 +13,6 @@ namespace WindowSettings
     inline const int HEIGHT = GameSettings::TILE_Y_AMOUNT * GameSettings::TILE_LENGTH; // Window's height based on how many Y tiles in field and how big they are.
     inline const int WIDTH = GameSettings::TILE_X_AMOUNT * GameSettings::TILE_LENGTH;  // Window's width based on how many X tiles in fiels and how big they are.
     inline const std::string NAME = "Snake game by Aman U!";                           // InitWindow's name.
-    inline bool CURSOR_ENABLED = false;                                                // CursorEnabling parametr
+    inline bool CURSOR_ENABLED = true;                                                 // CursorEnabling parametr
 
 };
